@@ -1,0 +1,16 @@
+{
+  "name": "joke-machine",
+  "version": "0.0.01",
+  "description": "Chuck Norris joke machine",
+  "main": "./app/main.js",
+  "author": "ricardoNava",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --hot --open",
+    "build": "webpack"
+  }
+}
