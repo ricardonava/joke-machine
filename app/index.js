@@ -6,12 +6,12 @@ const fetchButton = document.querySelector('button[type=button][value=Fetch]');
 // Create async function that will use the url
 // to fetch the jokes and store it in a local array
 async function fetchJokes() {
-  let url = 'https://api.icndb.com/jokes/random/50';
+  let url = 'https://api.icndb.com/jokes/random/5';
   let jokes = [];
   let data = await (await fetch(url)).json();
-  let responseLength = Object.keys(data.value).length;
-  for (let i = 0; i < responseLength; i++) {
-    jokes[i] = data.value[i].joke;
+  data = data.value;
+  for (joke in data) {
+    jokes.push(data[joke].joke);
   }
   return jokes;
 }
@@ -41,14 +41,14 @@ function printJoke(joke) {
   jokeText.textContent = joke;
 }
 
+fetchButton.addEventListener('click', () => {
+  fetchJokes().then(data => (jokes = data));
+});
+
 prevButton.addEventListener('click', () => {
   printJoke(jokeDispenser.prevJoke(jokes));
 });
 
 nextButton.addEventListener('click', () => {
   printJoke(jokeDispenser.nextJoke(jokes));
-});
-
-fetchButton.addEventListener('click', () => {
-  fetchJokes().then(dataFetch => (jokes = dataFetch));
 });
