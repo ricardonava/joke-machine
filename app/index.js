@@ -1,8 +1,9 @@
 let counter = 0;
-
 const url = "https://api.icndb.com/jokes/random/50";
-
 const jokeText = document.querySelector(".joke-text");
+const prevButton = document.querySelector("button[type=button][value=Prev]");
+const nextButton = document.querySelector("button[type=button][value=Next]");
+const fetchButton = document.querySelector("button[type=button][value=Fetch]");
 
 async function fetchJokes() {
   let jokes = [];
@@ -13,12 +14,6 @@ async function fetchJokes() {
   }
   return jokes;
 }
-
-const prevButton = document.querySelector("button[type=button][value=Prev]");
-
-const nextButton = document.querySelector("button[type=button][value=Next]");
-
-const fetchButton = document.querySelector("button[type=button][value=Fetch]");
 
 function prevJoke(jokes) {
   if (counter === 0) {
