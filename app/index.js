@@ -2,16 +2,23 @@ const jokeContainer = document.querySelector('.joke-container');
 
 // Create async function that will use the url
 // to fetch the jokes and store it in a local array
-async function fetchJokes() {
-  let url = 'https://api.icndb.com/jokes/random/5';
-  let jokesArray = [];
+async function sizeJokesArray() {
+  let url = 'https://api.icndb.com/jokes/count';
   let data = await (await fetch(url)).json();
-  data = data.value;
-  for (jokePosition in data) {
-    jokesArray.push(data[jokePosition].joke);
-  }
-  return jokesArray;
+  return data.value;
 }
+
+async function fetchJokes() {
+  let url = `https://api.icndb.com/jokes/random/${length}`;
+  let jokesData = [];
+  let data = await (await fetch(url)).json();
+  for (jokePosition in data.value) {
+    jokesData.push(data.value[jokePosition].joke);
+  }
+  return jokesData;
+}
+
+sizeJokesArray().then(size => (length = size));
 
 const jokeDispenser = (function() {
   let counter = 0; //start counter at position 0 of jokes array
@@ -21,15 +28,15 @@ const jokeDispenser = (function() {
   return {
     nextJoke: function() {
       _change(1);
-      counter %= jokes.length; // start from 0 if we get to the end of the array
-      return jokes[counter];
+      counter %= jokesArray.length; // start from 0 if we get to the end of the array
+      return jokesArray[counter];
     },
     prevJoke: function() {
       if (counter === 0) {
-        counter = jokes.length; // place our counter at the end of the array
+        counter = jokesArray.length; // place our counter at the end of the array
       }
       _change(-1);
-      return jokes[counter];
+      return jokesArray[counter];
     }
   };
 })();
@@ -41,10 +48,10 @@ function printJoke(joke) {
 
 jokeContainer.addEventListener('click', event => {
   if (event.target.value === 'Fetch') {
-    fetchJokes().then(data => (jokes = data));
+    fetchJokes(length).then(jokesData => (jokesArray = jokesData));
   } else if (event.target.value === 'Next') {
-    printJoke(jokeDispenser.prevJoke(jokes));
+    printJoke(jokeDispenser.prevJoke(jokesArray));
   } else {
-    printJoke(jokeDispenser.nextJoke(jokes));
+    printJoke(jokeDispenser.nextJoke(jokesArray));
   }
 });
