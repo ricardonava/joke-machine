@@ -5,20 +5,20 @@ const jokeContainer = document.querySelector('.joke-container');
 async function sizeJokesArray() {
   let url = 'https://api.icndb.com/jokes/count';
   let data = await (await fetch(url)).json();
-  return data.value;
+  data = data.value;
+  return data;
 }
 
 async function fetchJokes() {
   let url = `https://api.icndb.com/jokes/random/${length}`;
   let jokesData = [];
   let data = await (await fetch(url)).json();
-  for (jokePosition in data.value) {
-    jokesData.push(data.value[jokePosition].joke);
+  data = data.value;
+  for (jokePosition in data) {
+    jokesData.push(data[jokePosition].joke);
   }
   return jokesData;
 }
-
-sizeJokesArray().then(size => (length = size));
 
 const jokeDispenser = (function() {
   let counter = 0; //start counter at position 0 of jokes array
@@ -43,15 +43,17 @@ const jokeDispenser = (function() {
 
 // pass selected joke to print on html element
 function printJoke(joke) {
-  document.querySelector('.joke-text').textContent = joke;
+  document.querySelector('.joke-text p').textContent = joke;
 }
+
+sizeJokesArray().then(size => (length = size)); // Size of array in response
 
 jokeContainer.addEventListener('click', event => {
   if (event.target.value === 'Fetch') {
     fetchJokes(length).then(jokesData => (jokesArray = jokesData));
   } else if (event.target.value === 'Next') {
     printJoke(jokeDispenser.prevJoke(jokesArray));
-  } else {
+  } else if (event.target.value === 'Prev'){
     printJoke(jokeDispenser.nextJoke(jokesArray));
   }
 });
