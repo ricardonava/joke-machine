@@ -1,7 +1,7 @@
 const jokeContainer = document.querySelector('.joke-container');
+let jokesArray = JSON.parse(localStorage.getItem('jokesData'));
 
-// Create async function that will use the url
-// to fetch the jokes and store it in a local array
+// Fetch joke count from API endpoint
 async function sizeJokesArray() {
   let url = 'https://api.icndb.com/jokes/count';
   let data = await (await fetch(url)).json();
@@ -9,15 +9,23 @@ async function sizeJokesArray() {
   return data;
 }
 
+// use API endpoint to fetch the jokes and store it in an array
 async function fetchJokes() {
-  let url = `https://api.icndb.com/jokes/random/${length}`;
+  let url = `https://api.icndb.com/jokes/random/${length}`; // We are using length provided by sizeJokesArray()
   let jokesData = [];
-  let data = await (await fetch(url)).json();
+  let data = await (await fetch(url)).json(); // We get the response and parse it to JSON
   data = data.value;
   for (jokePosition in data) {
     jokesData.push(data[jokePosition].joke);
   }
-  return jokesData;
+  jokesArray = jokesData; // The first time we load the data we fill jokesArray with the response object
+  return localStorage.setItem('jokesData', JSON.stringify(jokesData)); // Create local storage with the response object
+}
+
+if (jokesArray === null) {
+  sizeJokesArray()
+    .then(size => (length = size)) // Size of array in response
+    .then(fetchJokes);
 }
 
 const jokeDispenser = (function() {
@@ -46,14 +54,11 @@ function printJoke(joke) {
   document.querySelector('.joke-text p').textContent = joke;
 }
 
-sizeJokesArray().then(size => (length = size)); // Size of array in response
-
+// Listen to event handlers for prev and next buttons and passes jokesArray as an argument
 jokeContainer.addEventListener('click', event => {
-  if (event.target.value === 'Fetch') {
-    fetchJokes(length).then(jokesData => (jokesArray = jokesData));
-  } else if (event.target.value === 'Next') {
+  if (event.target.value === 'Next') {
     printJoke(jokeDispenser.prevJoke(jokesArray));
-  } else if (event.target.value === 'Prev'){
+  } else if (event.target.value === 'Prev') {
     printJoke(jokeDispenser.nextJoke(jokesArray));
   }
 });
