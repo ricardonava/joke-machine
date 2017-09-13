@@ -10,7 +10,7 @@
 
   // use API endpoint to fetch the jokes and store it in an array
   // use count as a default parameter to store value from fetchCount()
-  async function fetchJokes(count = fetchCount()) {
+  async function fetchJokes(count = fetchCount(), printJoke) {
     const url = `https://api.icndb.com/jokes/random/${await count}`; // Await value provided by fetchCount()
 
     const { value } = await (await fetch(url)).json(); // Get response object and parse it to JSON
@@ -21,7 +21,11 @@
   }
 
   if (jokesArray === null) {
-    fetchJokes();
+    fetchJokes().then(() => {
+      printJoke(jokesArray[0]);
+    });
+  } else {
+    printJoke(jokesArray[0]);
   }
 
   const jokeDispenser = (() => {
@@ -51,7 +55,7 @@
   }
 
   // Listen to event handlers for prev and next buttons and passes jokesArray as an argument
-  const jokeContainer = document.querySelector('.joke-container');  
+  const jokeContainer = document.querySelector('.joke-container');
   jokeContainer.addEventListener('click', event => {
     if (event.target.value === 'Next') {
       printJoke(jokeDispenser.prevJoke(jokesArray));
