@@ -4,20 +4,33 @@
   <title>Getting Started</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
     crossorigin="anonymous">
-  <link rel="stylesheet" href="index.css">
+  <!-- <link rel="stylesheet" href="index.css"> -->
 </head>
 
 <body>
-  <div class="joke-container text-center">
-    <div class="joke-text">
-      <p class="font-weight-bold">Chuck Norris's favorite color is lavender. (Before you say anything about that, remember that Chuck Norris is listening.)</p>
-    </div>
-    <div class="joke-controls">
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-outline-primary" value="Prev">Prev</button>
-        <button type="button" class="btn btn-outline-primary" value="Next">Next</button>
+  <div class="container-fluid">
+    <div class="joke-container">
+      <div class="row">
+        <div class="col p-1">
+          <div class="joke-text">
+            <p class="text-center font-weight-bold">Chuck Norris's favorite color is lavender. (Before you say anything about that, remember that Chuck Norris is
+              listening.)
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="joke-controls">
+          <div class="col p-2">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-primary" value="Prev">Prev</button>
+              <button type="button" class="btn btn-outline-primary" value="Next">Next</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
   </div>
   <script src="bundle.js"></script>
 </body>
